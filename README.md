@@ -5,7 +5,7 @@ Projekt realizowany w ramach przedmiotu Bazy Danych 2 na semestrze 4 roku 2022/2
 Aplikacja ma umożliwiać zarządzanie połączeniami lotniczymi - dodawanie nowych możliwości, rezerwacja, itp (CRUD)
 
 # Autorzy
-Kacper Klimas i Krzysztof Solecki
+Kacper Klimas (`kaklimas@student.agh.edu.pl`) i Krzysztof Solecki `ksolecki@student.agh.edu.pl`
 
 # Technologie
  - frontend - Angular
