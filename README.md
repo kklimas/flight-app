@@ -1,13 +1,13 @@
-# flight-app
+# Flight-app
 Projekt realizowany w ramach przedmiotu Bazy Danych 2 na semestrze 4 roku 2022/2023.
 
-# temat
+# Temat
 Aplikacja ma umożliwiać zarządzanie połączeniami lotniczymi - dodawanie nowych możliwości, rezerwacja, itp (CRUD)
 
-# autorzy
+# Autorzy
 Kacper Klimas i Krzysztof Solecki
 
-# technologie
+# Technologie
  - frontend - Angular
  - backend - NodeJS
  - baza danych - PostgreSQL
