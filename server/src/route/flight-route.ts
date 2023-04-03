@@ -6,7 +6,8 @@ const jsonParser = bodyParser.json()
 
 export const flightRoute = express.Router();
 
-flightRoute.get('/', FlightController.getFlights)
+flightRoute.get('', FlightController.getFlights)
 flightRoute.get('/details/:id', FlightController.getFlightById)
 flightRoute.get('/available', FlightController.getAvailableFlights)
+flightRoute.put('', jsonParser, FlightController.updateFlight)
 flightRoute.post('', jsonParser, FlightController.addFlight)

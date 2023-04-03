@@ -43,3 +43,15 @@ export const addFlight = (req, res) => {
         res.sendStatus(400);
     });
 }
+
+export const updateFlight = (req, res) => {
+    const flightUpdate = req.body;
+    FlightService.updateFlight(flightUpdate)
+        .then(() => {
+            LogProvider.info(`Successfully updated flight.`)
+            res.sendStatus(200);
+        }).catch(err => {
+        LogProvider.error(err);
+        res.sendStatus(400);
+    });
+}

@@ -20,8 +20,19 @@ export class FlightRepository implements IRepository<Flight, FlightCreationDTO> 
                                            where t.id = ${flightId}`);
     }
 
-    update(object: Flight): Promise<QueryResult<Flight>> {
-        return Promise.resolve(undefined);
+    update(flight: Flight): Promise<QueryResult<Flight>> {
+        const query = `update t_flight
+                       set airline_id='${flight.airline_id}',
+                           departure_date='${flight.departure_date}',
+                           arrival_date='${flight.arrival_date}',
+                           origin='${flight.origin}',
+                           destination='${flight.destination}',
+                           base_fare='${flight.base_fare}',
+                           adult_fare='${flight.adult_fare}',
+                           no_total_places='${flight.no_total_places}',
+                           no_available_places='${flight.no_available_places}'
+                       where id = '${flight.id}'`
+        return QueryExecutor.executeQuery(query);
     }
 
     delete(flightId: string): Promise<QueryResult<Flight>> {

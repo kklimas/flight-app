@@ -1,5 +1,6 @@
 import {FlightRepository} from "../database/repository/FlightRepository.js";
 import {FlightCreationDTO} from "../model/flight.js";
+import {Flight} from "../database/entity/Flight.js";
 
 const flightRepository = new FlightRepository();
 
@@ -17,4 +18,8 @@ export const getFlightById = async (id: string) => {
 
 export const addFlight = async (flight: FlightCreationDTO) => {
     return await flightRepository.add(flight);
+}
+
+export const updateFlight = async (flight: Flight) => {
+    return await flightRepository.update(flight);
 }
