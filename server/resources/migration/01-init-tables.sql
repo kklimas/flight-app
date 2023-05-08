@@ -32,20 +32,20 @@ create table t_flight
     origin              varchar(50),
     destination         varchar(50),
     base_fare           integer,
-    adult_fate          integer,
+    adult_fare          integer,
     no_total_places     integer,
     no_available_places integer
 );
 
 create table t_reserved_flight
 (
-    id                 uuid               default gen_random_uuid() not null
+    id                 uuid default gen_random_uuid() not null
         primary key,
     flight_id          uuid
         constraint fk_flight
             references t_flight,
-    reservation_date   date               default CURRENT_DATE,
-    reservation_status reservation_status default 'N'::reservation_status,
+    reservation_date   date default CURRENT_DATE,
+    reservation_status char default 'N',
     user_id            uuid
         constraint fk_user
             references t_user

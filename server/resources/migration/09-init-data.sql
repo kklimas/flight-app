@@ -14,22 +14,22 @@ values ('5a249847-bfdf-4604-8bd4-5a02bcb91362', 'Central Skyport', '', 'United S
 insert into t_airline(id, name, iata, country)
 values ('2233c558-0292-4d47-aa56-294a81b6aff8', 'Central European Airlines', '', 'Czech Republic');
 
-insert into t_flight (id, airline_id, departure_date, arrival_date, origin, destination, base_fare, adult_fate,
+insert into t_flight (id, airline_id, departure_date, arrival_date, origin, destination, base_fare, adult_fare,
                       no_total_places, no_available_places)
 values ('4b6614dd-029f-4974-93c7-addbb780c98f', '08ccf376-a721-43c1-8017-97100eb519f1', '2023-04-30T07:00',
         '2023-04-30T11:55', 'WAW', 'PRG', 100, 25,
         50, 50);
-insert into t_flight (id, airline_id, departure_date, arrival_date, origin, destination, base_fare, adult_fate,
+insert into t_flight (id, airline_id, departure_date, arrival_date, origin, destination, base_fare, adult_fare,
                       no_total_places, no_available_places)
 values ('99dabdea-8296-494c-a1c8-9a023a984119', '08ccf376-a721-43c1-8017-97100eb519f1', '2023-05-01T07:00',
         '2023-05-01T12:00', 'WAW', 'SOF', 120, 25,
         100, 100);
-insert into t_flight (id, airline_id, departure_date, arrival_date, origin, destination, base_fare, adult_fate,
+insert into t_flight (id, airline_id, departure_date, arrival_date, origin, destination, base_fare, adult_fare,
                       no_total_places, no_available_places)
 values ('9d4f9abc-b429-4499-a2d9-efea48e7f968', '08ccf376-a721-43c1-8017-97100eb519f1', '2023-05-03T07:00',
         '2023-05-03T13:30', 'WAW', 'AMS', 150, 25,
         75, 75);
-insert into t_flight (id, airline_id, departure_date, arrival_date, origin, destination, base_fare, adult_fate,
+insert into t_flight (id, airline_id, departure_date, arrival_date, origin, destination, base_fare, adult_fare,
                       no_total_places, no_available_places)
 values ('da0d85e5-826b-43c2-a9f1-787477e15f36', '08ccf376-a721-43c1-8017-97100eb519f1', '2023-05-26T08:30',
         '2023-05-26T14:30', 'WAW', 'OTP', 160, 25,
