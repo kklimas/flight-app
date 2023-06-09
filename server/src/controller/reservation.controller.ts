@@ -1,6 +1,6 @@
-import * as ReservationService from "../service/reservation-service.js";
-import LogProvider from "../provider/log-provider.js";
-import * as FlightService from "../service/flight-service.js";
+import * as ReservationService from "../service/reservation.service.js";
+import LogProvider from "../provider/log.provider.js";
+import * as FlightService from "../service/flight.service.js";
 
 export const getReservations = (req, res) => {
     ReservationService.getReservations()

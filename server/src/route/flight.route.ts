@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import * as FlightController from '../controller/flight-controller.js'
+import * as FlightController from '../controller/flight.controller.js'
 
 const jsonParser = bodyParser.json()
 

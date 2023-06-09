@@ -1,8 +1,8 @@
-import {IRepository} from "./IRepository.js";
-import {Flight} from "../entity/Flight.js";
-import {QueryExecutor} from "../../provider/database-provider.js";
+import {IRepository} from "./repository.js";
+import {Flight} from "../entity/flight.entity.js";
+import {QueryExecutor} from "../../provider/database.provider.js";
 import {QueryResult} from "pg";
-import {AvailableFlight, FlightCreationDTO} from "../../model/flight.js";
+import {AvailableFlight, FlightCreationDTO} from "../../model/flight.model.js";
 
 export class FlightRepository implements IRepository<Flight, FlightCreationDTO> {
 

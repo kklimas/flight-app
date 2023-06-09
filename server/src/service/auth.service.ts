@@ -1,4 +1,4 @@
-import {UserCreationDTO} from "../database/entity/User.js";
+import {UserCreationDTO} from "../database/entity/user.entity.js";
 
 export const register = async (body: UserCreationDTO) => {
     const username = body.username;

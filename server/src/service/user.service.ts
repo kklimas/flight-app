@@ -1,6 +1,6 @@
-import * as DatabaseProvider from "../provider/database-provider.js"
-import {UserCreationDTO} from "../database/entity/User.js";
-import LogProvider from "../provider/log-provider.js";
+import * as DatabaseProvider from "../provider/database.provider.js"
+import {UserCreationDTO} from "../database/entity/user.entity.js";
+import LogProvider from "../provider/log.provider.js";
 
 const pool = DatabaseProvider.connectionPool();
 

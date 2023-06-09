@@ -1,4 +1,4 @@
-import {ReservationCreationDTO} from "../../model/reservation.js";
+import {ReservationCreationDTO} from "../../model/reservation.model.js";
 
 export interface Reservation extends ReservationCreationDTO {
     id: string;

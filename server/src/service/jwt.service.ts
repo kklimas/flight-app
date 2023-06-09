@@ -1,6 +1,6 @@
 import jwt, {TokenExpiredError} from 'jsonwebtoken';
 import fs from 'fs'
-import {User, UserRole} from "../database/entity/User.js";
+import {User, UserRole} from "../database/entity/user.entity.js";
 
 const privateKey = fs.readFileSync('private.key');
 

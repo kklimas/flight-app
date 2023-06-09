@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import * as ReservationController from '../controller/reservation-controller.js';
+import * as ReservationController from '../controller/reservation.controller.js';
 
 const jsonParser = bodyParser.json()
 

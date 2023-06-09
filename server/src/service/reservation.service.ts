@@ -1,6 +1,6 @@
-import {ReservationRepository} from "../database/repository/ReservationRepository.js";
-import {Reservation} from "../database/entity/Reservation.js";
-import {ReservationCreationDTO} from "../model/reservation.js";
+import {ReservationRepository} from "../database/repository/reservation.repository.js";
+import {Reservation} from "../database/entity/reservation.entity.js";
+import {ReservationCreationDTO} from "../model/reservation.model.js";
 
 const reservationRepository = new ReservationRepository();
 

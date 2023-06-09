@@ -1,8 +1,8 @@
-import {IRepository} from "./IRepository.js";
+import {IRepository} from "./repository.js";
 import {QueryResult} from "pg";
-import {Reservation} from "../entity/Reservation.js";
-import {ReservationCreationDTO} from "../../model/reservation.js";
-import {QueryExecutor} from "../../provider/database-provider.js";
+import {Reservation} from "../entity/reservation.entity.js";
+import {ReservationCreationDTO} from "../../model/reservation.model.js";
+import {QueryExecutor} from "../../provider/database.provider.js";
 
 export class ReservationRepository implements IRepository<Reservation, ReservationCreationDTO> {
 

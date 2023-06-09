@@ -1,12 +1,12 @@
 import express, {Express} from "express";
 import * as dotenv from "dotenv";
-import LogProvider from "./provider/log-provider.js";
-import {flightRoute} from "./route/flight-route.js"
-import {reservationRoute} from "./route/reservation-route.js";
+import LogProvider from "./provider/log.provider.js";
+import {flightRoute} from "./route/flight.route.js"
+import {reservationRoute} from "./route/reservation.route.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
-import {swaggerConfig} from "./config/swagger-config.js";
-import {testRoute} from "./route/test-route.js";
+import {swaggerConfig} from "./config/swagger.config.js";
+import {testRoute} from "./route/test.route.js";
 
 const app: Express = express();
 

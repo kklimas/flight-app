@@ -1,6 +1,6 @@
-import {FlightRepository} from "../database/repository/FlightRepository.js";
-import {FlightCreationDTO} from "../model/flight.js";
-import {Flight} from "../database/entity/Flight.js";
+import {FlightRepository} from "../database/repository/flight.repository.js";
+import {FlightCreationDTO} from "../model/flight.model.js";
+import {Flight} from "../database/entity/flight.entity.js";
 
 const flightRepository = new FlightRepository();
 

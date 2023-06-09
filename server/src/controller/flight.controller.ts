@@ -1,5 +1,5 @@
-import * as FlightService from "../service/flight-service.js"
-import LogProvider from "../provider/log-provider.js";
+import * as FlightService from "../service/flight.service.js"
+import LogProvider from "../provider/log.provider.js";
 
 export const getFlights = (req, res) => {
     FlightService.getFlights()
