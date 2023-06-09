@@ -1,39 +1,23 @@
-import express, {Express} from "express";
-import * as dotenv from "dotenv";
-import LogProvider from "./provider/log-provider.js";
-import {flightRoute} from "./route/flight-route.js"
-import {reservationRoute} from "./route/reservation-route.js";
+import express from "express";
 import Amadeus from "amadeus";
-import bodyParser from "body-parser";
-import cors from "cors";
+import bodyParser from "body-parser"
+import cors from "cors"
 
 const amadeus = new Amadeus({
-    clientId: '5kJcdXNFd85Cva6hPHgYVas2rBvNNCTg',
-    clientSecret: '4LRGyAtWsOyeongf',
-  });
+  clientId: '5kJcdXNFd85Cva6hPHgYVas2rBvNNCTg',
+  clientSecret: '4LRGyAtWsOyeongf',
+});
 
-const app: Express = express();
+const app = express();
+const PORT = 5000;
 
-//bodyparser
 app.use(bodyParser.json())
 
-//cors
+
+
 app.use(cors({
     origin: 'http://localhost:4200'
 }));
-
-// dotenv
-dotenv.config();
-
-// server
-const PORT = process.env.PORT;
-
-// flights
-app.use('/flights', flightRoute);
-
-// reservations
-app.use('/reservation', reservationRoute);
-
 
 app.get(`/city-and-airport-search/:parameter`, (req, res) => {
 	const parameter = req.params.parameter;
@@ -52,7 +36,10 @@ app.get(`/city-and-airport-search/:parameter`, (req, res) => {
 });
 
 
+
 app.get(`/flight-search`, (req, res) => {
+
+    
 
     const originCode = req.query.originCode;
     const destinationCode = req.query.destinationCode;
@@ -96,7 +83,8 @@ app.post(`/flight-confirmation`, (req, res) => {
 
 app.post(`/flight-booking`, (req, res) => {
 
-    // Book a flight 
+      // Book a flight 
+
     const flight = req.body.flight; 
     const name = req.body.name
 
@@ -144,7 +132,4 @@ amadeus.booking.flightOrders.post(
 
 });
 
-
-app.listen(PORT, () => {
-    LogProvider.info(`Server is listening on port ${PORT}.`);
-});
+app.listen(PORT, () => console.log(`Server is running on port: http://localhost:${PORT}`));
