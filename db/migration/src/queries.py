@@ -1,20 +1,11 @@
 import random
 
-import psycopg2
-
+from src.config import conn
 from util import random_dates, random_cities, random_fares, random_delay, subtract_days
 
 flight_count = 30
 reservation_count = 100
 user_count = 50
-
-conn = psycopg2.connect(
-    dbname='flight_system',
-    user='postgres',
-    password='postgres',
-    host='localhost',
-    port='5432'
-)
 
 
 def generate_sample_flights_query():

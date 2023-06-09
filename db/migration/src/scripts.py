@@ -1,21 +1,8 @@
 import os
 
-import psycopg2
-
+from src.config import conn
 from src.queries import written_queries, generate_sample_flights_query, generate_sample_reserved_flight_query, \
     generate_reservation_status_mix_query
-
-flight_count = 30
-reservation_count = 100
-user_count = 50
-
-conn = psycopg2.connect(
-    dbname='flight_system',
-    user='postgres',
-    password='postgres',
-    host='localhost',
-    port='5432'
-)
 
 
 def execute_scripts_from_dir(directory):
