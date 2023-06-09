@@ -1,15 +1,22 @@
 export interface AvailableFlight {
     id: string;
     airline_name: string;
-    airline_iata: string;
     origin: string;
     destination: string;
+    delay: Delay;
     departure_date: Date;
     arrival_date: Date;
     no_available_places: number;
     base_fare: number;
     adult_fare: number;
 
+}
+
+export interface Delay {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
 }
 
 export interface FlightCreationDTO {

@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
+    "module": "NodeNext",
     "outDir": "./dist",
     "target": "ES2022",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": ["node_modules", ".idea"],
   "include": ["src/**/*.ts"]

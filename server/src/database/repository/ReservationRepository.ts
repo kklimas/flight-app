@@ -18,7 +18,7 @@ export class ReservationRepository implements IRepository<Reservation, Reservati
 
     update(reservation: Reservation): Promise<QueryResult<Reservation>> {
         return QueryExecutor.executeQuery(`update t_reserved_flight
-                                           set reservation_status='${reservation.reservation_status}'`);
+                                           set reservation_status='${reservation.status}'`);
     }
 
     add(reservationDTO: ReservationCreationDTO): Promise<QueryResult<Reservation>> {
