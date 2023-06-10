@@ -1,10 +1,29 @@
 import express from "express";
-import TestController from "../controller/test.controller.js";
+import PingController from "../controller/test.controller.js";
 
-export const testRoute = express.Router();
+const router = express.Router();
 
-testRoute.get('', async (req, res) => {
-    const controller = new TestController();
-    const response = await controller.getTestMessage();
-    res.send(response)
-})
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      Book:
+ *          type: object
+ *          required:
+ *              - title
+ *              - author
+*           properties:
+ *              id:
+ *                  type: string
+ *                  description: Desc
+*               title:
+ *               type: string
+ *
+ */
+router.get("/ping", async (_req, res) => {
+    const controller = new PingController();
+    const response = await controller.getMessage();
+    return res.send(response);
+});
+
+export default router;

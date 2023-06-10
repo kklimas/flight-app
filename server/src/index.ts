@@ -3,11 +3,10 @@ import * as dotenv from "dotenv";
 import LogProvider from "./provider/log.provider.js";
 import {flightRoute} from "./route/flight.route.js"
 import {reservationRoute} from "./route/reservation.route.js";
-import swaggerUi from "swagger-ui-express";
-import swaggerJsDoc from "swagger-jsdoc";
-import {swaggerConfig} from "./config/swagger.config.js";
-import {testRoute} from "./route/test.route.js";
 import {operationRoute} from "./route/operation.route.js";
+import swaggerUI from "swagger-ui-express";
+import router from "./route/test.route.js";
+import swaggerJSDoc from "swagger-jsdoc";
 
 const app: Express = express();
 
@@ -17,15 +16,21 @@ dotenv.config();
 // server
 const PORT = process.env.PORT;
 
-const specs = swaggerJsDoc(swaggerConfig);
-app.use(
-    "/docs",
-    swaggerUi.serve,
-    swaggerUi.setup(specs)
-);
 app.use(express.json())
 
-app.use('/test', testRoute)
+// documentation
+app.use(
+    "/docs",
+    swaggerUI.serve,
+    swaggerUI.setup(undefined, {
+        swaggerOptions: {
+            url: "build/swagger.json",
+        },
+    })
+);
+
+app.use('/test', router)
+app.get('/test', (req, res) => res.send('Hello'))
 
 // flights
 app.use('/flights', flightRoute);

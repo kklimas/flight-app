@@ -1,9 +1,13 @@
 {
-  "title": "Flight system API Documentation",
   "entryFile": "src/index.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controller/*controller.ts"],
+  "host": "localhost:8099",
   "spec": {
-    "outputDirectory": "dist",
+    "outputDirectory": "build",
     "specVersion": 3
+  },
+  "routes": {
+    "routesDir": "build/route"
   }
 }

@@ -4,10 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "rimraf dist && npx tsc",
-    "prestart": "npm run build && npm run swagger",
-    "start": "node dist/index.js && clear",
-    "preserve": "npm run build",
+    "build": "rimraf build && tsoa spec-and-routes && npx tsc",
+    "prestart": "npm run build",
+    "start": "node build/index.js",
     "swagger": "tsoa spec"
   },
   "dependencies": {

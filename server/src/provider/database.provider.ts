@@ -3,12 +3,13 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+const port = process.env.DATABASE_PORT === undefined ? '8099': process.env.DATABASE_PORT;
 const poolConfig = {
     database: process.env.DATABASE_NAME,
     user: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     host: process.env.DATABASE_HOST,
-    port: parseInt(process.env.DATABASE_PORT),
+    port: parseInt(port),
 }
 
 export class QueryExecutor {
@@ -17,8 +18,4 @@ export class QueryExecutor {
     static executeQuery = async (query: string) => {
         return await this.pool.query(query);
     }
-}
-
-export const connectionPool = () => {
-    return new pg.Pool(poolConfig);
 }

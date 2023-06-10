@@ -17,7 +17,13 @@ export interface Reservation {
 export interface ReservationDetails extends Reservation {
     base_fare: number;
     adult_fare: number;
-    participants: string;
+    participants: ReservationParticipant[];
+}
+
+export interface ReservationParticipant {
+    first_name: string;
+    last_name: string;
+    is_adult: boolean;
 }
 
 export enum ReservationStatus {

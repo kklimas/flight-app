@@ -25,7 +25,7 @@ export class FlightDelay {
         this.minutes = this.replaceUndefined(minutes);
     }
 
-    private replaceUndefined(val1) {
+    private replaceUndefined(val1: number | undefined) {
         return val1 !== undefined ? val1: 0;
     }
 

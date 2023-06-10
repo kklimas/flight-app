@@ -1,3 +1,5 @@
+import {ReservationStatus} from "./reservation.entity.js";
+
 export interface PaymentOperation {
     id: number;
     reservation_id: number;
@@ -12,10 +14,16 @@ export enum PaymentType {
     INCOME, OUTCOME
 }
 
-export interface ReservationLog {
+export interface UserReservationLog {
     id: number;
     username: string;
     first_name: string;
     last_name: string;
-    logs: string;
+    logs: ReservationLog[];
+}
+
+export interface ReservationLog {
+    log_date: string;
+    reservation_id: number;
+    status: ReservationStatus;
 }

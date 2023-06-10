@@ -1,13 +1,11 @@
 import {Get, Route} from "tsoa";
 
-@Route("test")
+@Route("/test")
 export default class TestController {
-
-    @Get("")
-    async getTestMessage(): Promise<any> {
+    @Get("/")
+    public async getMessage(): Promise<any> {
         return {
-            message: "message"
+            message: 'Hello'
         }
-
     }
 }

@@ -243,52 +243,47 @@ END;
 $$
     LANGUAGE plpgsql;
 
-CREATE TYPE reservation_participant AS
-(
-    first_name varchar(50),
-    last_name  varchar(50),
-    is_adult   boolean
-);
-
 CREATE OR REPLACE FUNCTION f_get_reservation_by_id(f_reservation_id INT)
     RETURNS TABLE
             (
-                id               int,
-                reservation_date timestamp,
-                status           varchar(50),
-                departure_date   timestamp,
-                arrival_date     timestamp,
-                origin_city      varchar(50),
-                destination_city varchar(50),
-                delay            interval,
-                base_fare        numeric(10, 2),
-                adult_fare       numeric(10, 2),
-                participants     reservation_participant[]
+                id               INT,
+                reservation_date TIMESTAMP,
+                status           VARCHAR(50),
+                departure_date   TIMESTAMP,
+                arrival_date     TIMESTAMP,
+                origin_city      VARCHAR(50),
+                destination_city VARCHAR(50),
+                delay            INTERVAL,
+                base_fare        NUMERIC(10, 2),
+                adult_fare       NUMERIC(10, 2),
+                participants     JSON[]
             )
 AS
 $$
 BEGIN
-    return query
-        select tr.id,
+    RETURN QUERY
+        SELECT tr.id,
                tr.date,
                tr.status,
                tf.departure_date,
                tf.arrival_date,
-               tfc1.city_name                                    as origin,
-               tfc2.city_name                                    as destination,
+               tfc1.city_name AS origin_city,
+               tfc2.city_name AS destination_city,
                tf.delay,
                tf.base_fare,
                tf.adult_fare,
-               array(select row (rp.first_name, rp.last_name, rp.is_adult)::reservation_participant
-                     from t_reservation_participant rp
-                     where rp.reservation_id = f_reservation_id) as participants
-        from t_reservation tr
-                 inner join t_flight tf on tr.flight_id = tf.id
-                 inner join t_airline ta on ta.id = tf.airline_id
-                 inner join t_flight_city tfc1 on tfc1.airline_code = tf.origin_id
-                 inner join t_flight_city tfc2 on tfc2.airline_code = tf.destination_id
-        where tr.id = f_reservation_id
-        limit 1;
+               ARRAY(
+                       SELECT JSON_BUILD_OBJECT('first_name', rp.first_name, 'last_name', rp.last_name, 'is_adult',
+                                                rp.is_adult)
+                       FROM t_reservation_participant rp
+                       WHERE rp.reservation_id = f_reservation_id
+                   )          AS participants
+        FROM t_reservation tr
+                 INNER JOIN t_flight tf ON tr.flight_id = tf.id
+                 INNER JOIN t_flight_city tfc1 ON tfc1.airline_code = tf.origin_id
+                 INNER JOIN t_flight_city tfc2 ON tfc2.airline_code = tf.destination_id
+        WHERE tr.id = f_reservation_id
+        LIMIT 1;
 END;
 $$
     LANGUAGE plpgsql;
@@ -352,13 +347,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TYPE reservation_log as
-(
-    log_date       timestamp,
-    reservation_id int,
-    status         varchar(20)
-);
-
 CREATE OR REPLACE FUNCTION f_user_transactions(f_user_id INT)
     RETURNS TABLE
             (
@@ -366,7 +354,7 @@ CREATE OR REPLACE FUNCTION f_user_transactions(f_user_id INT)
                 username   varchar(50),
                 first_name varchar(50),
                 last_name  varchar(50),
-                logs       reservation_log[]
+                logs       json[]
             )
 AS
 $$
@@ -376,7 +364,7 @@ BEGIN
                t.username,
                t.first_name,
                t.last_name,
-               array(select row (log_date, reservation_id, status)::reservation_log
+               array(select json_build_object('log_date', log_date, 'reservation_id', reservation_id, 'status', status)
                      from t_reservation_log trl
                      where trl.reservation_id = tr.id)
         from t_user t
