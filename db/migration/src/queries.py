@@ -8,8 +8,24 @@ reservation_count = 100
 user_count = 50
 
 
+class User:
+    def __init__(self, fn, ln, ia):
+        self.fn = fn
+        self.ln = ln
+        self.ia = ia
+
+
+sample_people = [
+    User('Jhon', 'Doe', True),
+    User('Jasmine', 'Doe', False),
+    User('Jack', 'Doe', False),
+    User('Ricky', 'Bossman', True),
+    User('Francis', 'Gold', False)
+]
+
+
 def generate_sample_flights_query():
-    query = "insert into t_flight (id, airline_id, departure_date, arrival_date, origin_id, destination_id, " \
+    query = "insert into t_flight (airline_id, departure_date, arrival_date, origin_id, destination_id, " \
             "base_fare, adult_fare, no_total_places, no_available_places, delay) values\n"
     for i in range(1, flight_count + 1):
         airline_id = random.randint(1, 10)
@@ -17,12 +33,11 @@ def generate_sample_flights_query():
         cities = random_cities()
         fares = random_fares()
         places = random.randint(50, 200)
-        delay = random_delay()
-        query += "\t({id}, {airline_id}, '{departure_date}', '{arrival_date}', '{origin_id}', '{destination_id}', {base_fare}, " \
+        query += "\t({airline_id}, '{departure_date}', '{arrival_date}', '{origin_id}', '{destination_id}', {base_fare}, " \
                  "{adult_fare}, {no_total_places}, {no_available_places}, '{delay}')".format(
-            id=i, airline_id=airline_id, departure_date=dates[0], arrival_date=dates[1], origin_id=cities[0],
+            airline_id=airline_id, departure_date=dates[0], arrival_date=dates[1], origin_id=cities[0],
             destination_id=cities[1], base_fare=fares[0],
-            adult_fare=fares[1], no_total_places=places, no_available_places=places, delay=delay)
+            adult_fare=fares[1], no_total_places=places, no_available_places=places, delay='0 days')
         if i == flight_count:
             query += ';'
         else:
@@ -30,19 +45,31 @@ def generate_sample_flights_query():
     return query
 
 
+def delay_flights():
+    with conn.cursor() as cursor:
+        for i in range(1, flight_count + 1):
+            if i % 5 == 0:
+                cursor.execute("call p_delay_flight({id}, '{delay}')".format(id=i, delay=random_delay()))
+        conn.commit()
+
+
 def generate_sample_reserved_flight_query():
     with conn.cursor() as cursor:
         cursor.execute("select * from t_flight")
         flights = cursor.fetchall()
 
-    query = "insert into t_reservation (id, flight_id, date, user_id) values\n"
+    query = "insert into t_reservation (flight_id, date, booking_party_id, participants_number) values\n"
     for i in range(1, reservation_count + 1):
         flight_id = random.randint(1, flight_count)
         reservation_date = subtract_days(flights[flight_id - 1][2], random.randint(5, 20))
         user_id = random.randint(1, user_count)
-        query += "\t({id}, {flight_id}, '{reservation_date}', {user_id})".format(id=i, flight_id=flight_id,
-                                                                                 reservation_date=reservation_date,
-                                                                                 user_id=user_id)
+        query += "\t({flight_id}, '{reservation_date}', {booking_party_id}, {participants_number})".format(
+            flight_id=flight_id,
+            reservation_date=reservation_date,
+            booking_party_id=user_id,
+            participants_number=random.randint(
+                1,
+                5))
         if i == reservation_count:
             query += ';'
         else:
@@ -50,10 +77,54 @@ def generate_sample_reserved_flight_query():
     return query
 
 
-def generate_reservation_status_mix_query():
-    query1 = "update t_reservation set status = 'P' where id % 3 = 0"
-    query2 = "update t_reservation set status = 'C' where id % 4 = 0"
-    return query1, query2
+def generate_sample_reservation_participant():
+    with conn.cursor() as cursor:
+        cursor.execute("select * from t_reservation")
+        reservations = cursor.fetchall()
+
+    for reservation in reservations:
+        booking_party_id = reservation[3]
+        participants_no = reservation[4]
+        query = "insert into t_reservation_participant (reservation_id, first_name, last_name, is_adult) values\n"
+        with conn.cursor() as cursor:
+            cursor.execute("select * from t_user where id = {user_id}".format(user_id=booking_party_id))
+            user = cursor.fetchone()
+            query += "\t({reservation_id}, '{first_name}', '{last_name}', {is_adult})\n".format(
+                reservation_id=reservation[0], first_name=user[2], last_name=user[3], is_adult=True
+            )
+            if participants_no == 1:
+                query += ';'
+            else:
+                query += ','
+            for i in range(participants_no - 1):
+                human = sample_people[i]
+                query += "\t({reservation_id}, '{first_name}', '{last_name}', {is_adult})".format(
+                    reservation_id=reservation[0], first_name=human.fn, last_name=human.ln, is_adult=human.ia
+                )
+                if i == participants_no - 2:
+                    query += ';'
+                else:
+                    query += ',\n'
+            cursor.execute(query)
+            conn.commit()
+
+
+def generate_paid_reservations():
+    with conn.cursor() as cursor:
+        for i in range(1, reservation_count + 1):
+            if i % 5 == 0:
+                cursor.execute("call p_make_payment({id})".format(id=i))
+        conn.commit()
+
+
+def generate_canceled_reservations():
+    with conn.cursor() as cursor:
+        cursor.execute("select * from t_reservation where status = 'PAID'")
+        reservations = cursor.fetchall()
+        for i in range(1, len(reservations) + 1):
+            if i % 3 == 0:
+                cursor.execute("call p_cancel_reservation({id})".format(id=i))
+        conn.commit()
 
 
 USER_QUERY = """

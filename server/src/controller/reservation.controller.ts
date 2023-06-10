@@ -24,24 +24,36 @@ export const getReservationById = (req, res) => {
     });
 }
 
-export const updateReservation = (req, res) => {
-    const reservationUpdate = req.body;
-    ReservationService.updateReservation(reservationUpdate)
-        .then(() => {
-            LogProvider.info(`Successfully updated reservation.`)
-            res.sendStatus(200);
-        }).catch(err => {
-        LogProvider.error(err);
-        res.sendStatus(400);
-    });
-}
-
 export const addReservation = (req, res) => {
     const reservationCreation = req.body;
     ReservationService.addReservation(reservationCreation)
         .then(() => {
             LogProvider.info(`Successfully added new reservation.`)
             res.sendStatus(201);
+        }).catch(err => {
+        LogProvider.error(err);
+        res.sendStatus(400);
+    });
+}
+
+export const makePaymentForReservation = (req, res) => {
+    const reservationId = req.params.id;
+    ReservationService.makePayment(reservationId)
+        .then(() => {
+            LogProvider.info(`Successfully made a payment for reservation with id ${reservationId}.`)
+            res.sendStatus(200);
+        }).catch(err => {
+        LogProvider.error(err);
+        res.send({status: 400, error: err});
+    });
+}
+
+export const cancelReservation = (req, res) => {
+    const reservationId = req.params.id;
+    ReservationService.cancelReservation(reservationId)
+        .then(() => {
+            LogProvider.info(`Successfully canceled reservation with id ${reservationId}.`)
+            res.sendStatus(200);
         }).catch(err => {
         LogProvider.error(err);
         res.sendStatus(400);

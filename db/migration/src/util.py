@@ -52,9 +52,6 @@ def random_fares():
 
 
 def random_delay():
-    chance = random.randint(1, 10)
-    if chance < 8:
-        return '0 days'
     return generate_delay()
 
 

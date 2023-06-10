@@ -1,33 +1,14 @@
-export interface AvailableFlight {
-    id: string;
-    airline_name: string;
-    origin: string;
-    destination: string;
-    delay: Delay;
-    departure_date: Date;
-    arrival_date: Date;
-    no_available_places: number;
-    base_fare: number;
-    adult_fare: number;
-
-}
-
-export interface Delay {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-}
+import {FlightDelay} from "../database/entity/flight.entity.js";
 
 export interface FlightCreationDTO {
     airline_id: string,
-    departure_date: Date,
-    arrival_date: Date,
-    origin: string,
-    destination: string,
+    departure_date: string,
+    arrival_date: string,
+    delay: FlightDelay;
+    origin_id: string,
+    destination_id: string,
     base_fare: number,
     adult_fare: number,
-    no_total_places: number,
-    no_available_places: number
+    no_total_places: number
 }
 

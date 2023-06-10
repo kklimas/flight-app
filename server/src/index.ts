@@ -7,6 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 import {swaggerConfig} from "./config/swagger.config.js";
 import {testRoute} from "./route/test.route.js";
+import {operationRoute} from "./route/operation.route.js";
 
 const app: Express = express();
 
@@ -22,6 +23,7 @@ app.use(
     swaggerUi.serve,
     swaggerUi.setup(specs)
 );
+app.use(express.json())
 
 app.use('/test', testRoute)
 
@@ -30,6 +32,9 @@ app.use('/flights', flightRoute);
 
 // reservations
 app.use('/reservation', reservationRoute);
+
+// operation logs
+app.use('/operation', operationRoute)
 
 app.listen(PORT, () => {
     LogProvider.info(`Server is listening on port ${PORT}.`);

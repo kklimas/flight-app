@@ -1,5 +1,6 @@
 import * as FlightService from "../service/flight.service.js"
 import LogProvider from "../provider/log.provider.js";
+import {FlightDelay} from "../database/entity/flight.entity.js";
 
 export const getFlights = (req, res) => {
     FlightService.getFlights()
@@ -44,12 +45,36 @@ export const addFlight = (req, res) => {
     });
 }
 
-export const updateFlight = (req, res) => {
-    const flightUpdate = req.body;
-    FlightService.updateFlight(flightUpdate)
+export const delayFlight = (req, res) => {
+    const flightId = req.params.id;
+    const delay = req.body;
+    FlightService.delayFlight(flightId, new FlightDelay(delay.days, delay.hours, delay.minutes))
         .then(() => {
-            LogProvider.info(`Successfully updated flight.`)
+            LogProvider.info(`Delayed flight with id ${flightId}.`)
             res.sendStatus(200);
+        }).catch(err => {
+        LogProvider.error(err);
+        res.sendStatus(400);
+    });
+}
+
+export const cancelFlight = (req, res) => {
+    const flightId = req.params.id;
+    FlightService.cancelFlight(flightId)
+        .then(() => {
+            LogProvider.info(`Canceled flight with id ${flightId} and all reservations for this flight.`)
+            res.sendStatus(200);
+        }).catch(err => {
+        LogProvider.error(err);
+        res.sendStatus(400);
+    });
+}
+
+export const getFlightParticipants = (req, res) => {
+    const flightId = req.params.id;
+    FlightService.getFlightParticipants(flightId)
+        .then((data) => {
+            res.send(data.rows);
         }).catch(err => {
         LogProvider.error(err);
         res.sendStatus(400);

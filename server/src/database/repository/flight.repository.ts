@@ -2,52 +2,38 @@ import {IRepository} from "./repository.js";
 import {Flight} from "../entity/flight.entity.js";
 import {QueryExecutor} from "../../provider/database.provider.js";
 import {QueryResult} from "pg";
-import {AvailableFlight, FlightCreationDTO} from "../../model/flight.model.js";
+import {FlightCreationDTO} from "../../model/flight.model.js";
 
 export class FlightRepository implements IRepository<Flight, FlightCreationDTO> {
 
     getAll(): Promise<QueryResult<Flight[]>> {
-        return QueryExecutor.executeQuery("select * from t_flight");
+        return QueryExecutor.executeQuery("select * from flights");
     }
 
-    getAvailableFlights(): Promise<QueryResult<AvailableFlight[]>> {
+    getAvailableFlights(): Promise<QueryResult<Flight[]>> {
         return QueryExecutor.executeQuery("select * from available_flights");
     }
 
-    getById(flightId: string): Promise<QueryResult<Flight>> {
+    getById(flightId: number): Promise<QueryResult<Flight>> {
         return QueryExecutor.executeQuery(`select *
-                                           from t_flight t
-                                           where t.id = ${flightId}`);
+                                           from f_get_flight_by_id(${flightId})`);
     }
 
-    update(flight: Flight): Promise<QueryResult<Flight>> {
-        const query = `update t_flight
-                       set airline_id='${flight.airline_id}',
-                           departure_date='${flight.departure_date}',
-                           arrival_date='${flight.arrival_date}',
-                           origin='${flight.origin}',
-                           destination='${flight.destination}',
-                           base_fare='${flight.base_fare}',
-                           adult_fare='${flight.adult_fare}',
-                           no_total_places='${flight.no_total_places}',
-                           no_available_places='${flight.no_available_places}'
-                       where id = '${flight.id}'`
-        return QueryExecutor.executeQuery(query);
+    delay(flightId: number, delay: string): Promise<QueryResult<Flight>> {
+        return QueryExecutor.executeQuery(`call p_delay_flight(${flightId}, '${delay}')`);
     }
 
-    delete(flightId: string): Promise<QueryResult<Flight>> {
-        return QueryExecutor.executeQuery(`delete
-                                           from t_flight t
-                                           where t.id = ${flightId}`);
+    cancel(flightId: number): Promise<QueryResult<Flight>> {
+        return QueryExecutor.executeQuery(`call p_cancel_flight(${flightId})`);
     }
 
     add(flight: FlightCreationDTO): Promise<QueryResult<Flight>> {
-        const query = `insert into t_flight (airline_id, departure_date, arrival_date, origin, destination, base_fare,
-                                             adult_fare, no_total_places, no_available_places)
-                       values ('${flight.airline_id}', '${flight.departure_date}', '${flight.arrival_date}',
-                               '${flight.origin}', '${flight.destination}', '${flight.base_fare}', '${flight.adult_fare}
-                               ', '${flight.no_total_places}', '${flight.no_available_places}')`
-        return QueryExecutor.executeQuery(query);
+        return QueryExecutor.executeQuery(`call p_add_flight(${flight.airline_id}, '${flight.departure_date}', '${flight.arrival_date}', '${flight.delay.toString()}', '${flight.origin_id}', '${flight.destination_id}', ${flight.base_fare}, ${flight.adult_fare}, ${flight.no_total_places})`);
+    }
+
+    flightParticipants(flightId: number): Promise<QueryResult<Flight[]>> {
+        return QueryExecutor.executeQuery(`select *
+                                           from f_flight_participants(${flightId})`);
     }
 
 }
