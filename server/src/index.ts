@@ -1,14 +1,26 @@
 import express, {Express} from "express";
 import * as dotenv from "dotenv";
-import LogProvider from "./provider/log.provider.js";
-import {flightRoute} from "./route/flight.route.js"
-import {reservationRoute} from "./route/reservation.route.js";
-import {operationRoute} from "./route/operation.route.js";
-import swaggerUI from "swagger-ui-express";
-import router from "./route/test.route.js";
-import swaggerJSDoc from "swagger-jsdoc";
+import LogProvider from "./provider/log-provider.js";
+import {flightRoute} from "./route/flight-route.js"
+import {reservationRoute} from "./route/reservation-route.js";
+import Amadeus from "amadeus";
+import bodyParser from "body-parser";
+import cors from "cors";
+
+const amadeus = new Amadeus({
+    clientId: '5kJcdXNFd85Cva6hPHgYVas2rBvNNCTg',
+    clientSecret: '4LRGyAtWsOyeongf',
+  });
 
 const app: Express = express();
+
+//bodyparser
+app.use(bodyParser.json())
+
+//cors
+app.use(cors({
+    origin: 'http://localhost:4200'
+}));
 
 // dotenv
 dotenv.config();
@@ -16,30 +28,122 @@ dotenv.config();
 // server
 const PORT = process.env.PORT;
 
-app.use(express.json())
-
-// documentation
-app.use(
-    "/docs",
-    swaggerUI.serve,
-    swaggerUI.setup(undefined, {
-        swaggerOptions: {
-            url: "build/swagger.json",
-        },
-    })
-);
-
-app.use('/test', router)
-app.get('/test', (req, res) => res.send('Hello'))
-
 // flights
 app.use('/flights', flightRoute);
 
 // reservations
 app.use('/reservation', reservationRoute);
 
-// operation logs
-app.use('/operation', operationRoute)
+
+app.get(`/city-and-airport-search/:parameter`, (req, res) => {
+	const parameter = req.params.parameter;
+	// Which cities or airports start with ’r'?
+	amadeus.referenceData.locations
+		.get({
+			keyword: parameter,
+			subType: Amadeus.location.any,
+		})
+		.then(function (response) {
+			res.send(response.result);
+		})
+		.catch(function (response) {
+			res.send(response);
+		});
+});
+
+
+app.get(`/flight-search`, (req, res) => {
+
+    const originCode = req.query.originCode;
+    const destinationCode = req.query.destinationCode;
+    const dateOfDeparture = req.query.dateOfDeparture
+    
+    // Find the cheapest flights
+    amadeus.shopping.flightOffersSearch.get({
+        originLocationCode: originCode,
+        destinationLocationCode: destinationCode,
+        departureDate: dateOfDeparture,
+        adults: '1',
+        max: '7'
+    }).then(function (response) {
+        res.send(response.result);
+    }).catch(function (response) {
+        res.send(response);
+    });
+    });
+
+
+app.post(`/flight-confirmation`, (req, res) => {
+
+    const flight = req.body.flight
+    
+    // Confirm availability and price
+    amadeus.shopping.flightOffers.pricing.post(
+        JSON.stringify({
+            'data': {
+                'type': 'flight-offers-pricing',
+                'flightOffers': [flight],
+            }
+        })
+    ).then(function (response) {
+            res.send(response.result);
+        }).catch(function (response) {
+            res.send(response)
+        })
+    
+})
+
+
+app.post(`/flight-booking`, (req, res) => {
+
+    // Book a flight 
+    const flight = req.body.flight; 
+    const name = req.body.name
+
+amadeus.booking.flightOrders.post(
+      JSON.stringify({
+        'data': {
+          'type': 'flight-order',
+          'flightOffers': [flight],
+          'travelers': [{
+            "id": "1",
+            "dateOfBirth": "1982-01-16",
+            "name": {
+              "firstName": name.first,
+              "lastName": name.last
+            },
+            "gender": "MALE",
+            "contact": {
+              "emailAddress": "jorge.gonzales833@telefonica.es",
+              "phones": [{
+                "deviceType": "MOBILE",
+                "countryCallingCode": "34",
+                "number": "480080076"
+              }]
+            },
+            "documents": [{
+              "documentType": "PASSPORT",
+              "birthPlace": "Madrid",
+              "issuanceLocation": "Madrid",
+              "issuanceDate": "2015-04-14",
+              "number": "00000000",
+              "expiryDate": "2025-04-14",
+              "issuanceCountry": "ES",
+              "validityCountry": "ES",
+              "nationality": "ES",
+              "holder": true
+            }]
+          }]
+        }
+      })
+    ).then(function (response) {
+    res.send(response.result);
+  }).catch(function (response) {
+    res.send(response);
+  });
+
+});
+
 
 app.listen(PORT, () => {
     LogProvider.info(`Server is listening on port ${PORT}.`);
