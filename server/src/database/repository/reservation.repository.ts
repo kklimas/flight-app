@@ -7,7 +7,7 @@ import {QueryExecutor} from "../../provider/database.provider.js";
 export class ReservationRepository implements IRepository<Reservation, ReservationCreationDTO> {
 
     getAll(): Promise<QueryResult<Reservation[]>> {
-        return QueryExecutor.executeQuery("select * from reservations");
+        return QueryExecutor.executeQuery("select * from reservations order by id");
     }
 
     getById(reservationId: number): Promise<QueryResult<ReservationDetails>> {

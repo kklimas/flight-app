@@ -1,7 +1,4 @@
 node_modules
 .idea
-dist
+build
 views
-../client/node_modules
-../client/dist
-../client/.idea

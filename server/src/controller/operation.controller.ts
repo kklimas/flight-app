@@ -12,6 +12,16 @@ export const findPaymentTransactions = (req: Request, res: Response) => {
     });
 }
 
+export const findReservationTransactions = (req: Request, res: Response) => {
+    OperationService.findReservationTransactions()
+        .then(result => {
+            res.send(result.rows);
+        }).catch(err => {
+        LogProvider.error(err);
+        res.sendStatus(400);
+    });
+}
+
 export const findUserReservationTransactions = (req: Request, res: Response) => {
     OperationService.findUserReservationTransactions(parseInt(req.params.id))
         .then(result => {

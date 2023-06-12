@@ -428,3 +428,8 @@ BEGIN
 END;
 $$
     LANGUAGE plpgsql;
+
+create or replace view reservation_transactions as
+    select tr.id, tu.first_name, tu.last_name, tr.status, tr.log_date from t_reservation_log tr
+inner join t_reservation t on t.id = tr.reservation_id
+inner join t_user tu on tu.id = t.booking_party_id

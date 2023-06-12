@@ -7,11 +7,11 @@ import {FlightCreationDTO} from "../../model/flight.model.js";
 export class FlightRepository implements IRepository<Flight, FlightCreationDTO> {
 
     getAll(): Promise<QueryResult<Flight[]>> {
-        return QueryExecutor.executeQuery("select * from flights");
+        return QueryExecutor.executeQuery("select * from flights order by id");
     }
 
     getAvailableFlights(): Promise<QueryResult<Flight[]>> {
-        return QueryExecutor.executeQuery("select * from available_flights");
+        return QueryExecutor.executeQuery("select * from available_flights order by id");
     }
 
     getById(flightId: number): Promise<QueryResult<Flight>> {
@@ -33,7 +33,7 @@ export class FlightRepository implements IRepository<Flight, FlightCreationDTO> 
 
     flightParticipants(flightId: number): Promise<QueryResult<Flight[]>> {
         return QueryExecutor.executeQuery(`select *
-                                           from f_flight_participants(${flightId})`);
+                                           from f_flight_participants(${flightId}) order by id`);
     }
 
 }

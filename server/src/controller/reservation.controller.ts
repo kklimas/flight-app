@@ -41,7 +41,7 @@ export const makePaymentForReservation = (req: Request, res: Response) => {
     ReservationService.makePayment(parseInt(reservationId))
         .then(() => {
             LogProvider.info(`Successfully made a payment for reservation with id ${reservationId}.`)
-            res.sendStatus(200);
+            res.status(200).send();
         }).catch(err => {
         LogProvider.error(err);
         res.send({status: 400, error: err});
@@ -53,7 +53,7 @@ export const cancelReservation = (req: Request, res: Response) => {
     ReservationService.cancelReservation(parseInt(reservationId))
         .then(() => {
             LogProvider.info(`Successfully canceled reservation with id ${reservationId}.`)
-            res.sendStatus(200);
+            res.status(200).send();
         }).catch(err => {
         LogProvider.error(err);
         res.sendStatus(400);
