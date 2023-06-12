@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <mat-icon>airplanemode_active</mat-icon>
+  <span class="logo">Flight now</span>
+  <span class="example-spacer"></span>
+  <div class="option-box">
+    <button routerLink="/flights" mat-button class="option">
+      <mat-icon>flight_takeoff</mat-icon>
+      Flights
+    </button>
+    <button routerLink="/booking" mat-button class="option">
+      <mat-icon>bookmark_border</mat-icon>
+      Booking
+    </button>
+    <button routerLink="/operations" mat-button class="option">
+      <mat-icon>swap_horiz</mat-icon>
+      Operations
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-card>
+  <router-outlet></router-outlet>
+</mat-card>

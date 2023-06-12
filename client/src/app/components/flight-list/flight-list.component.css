@@ -1,0 +1,8 @@
+.demo-table {
+  width: 100%;
+}
+
+mat-chip-option {
+  font-size: .7rem;
+  font-weight: bold;
+}

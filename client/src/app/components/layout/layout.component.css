@@ -1,0 +1,28 @@
+mat-toolbar {
+  width: 100%;
+  height: 100px;
+  padding: 8px 128px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.logo {
+  font-size: 2rem;
+  margin-left: 16px;
+}
+
+.option-box {
+  display: flex;
+  gap: 32px;
+}
+
+.option {
+  font-size: 1.2rem;
+}
+
+mat-card {
+  padding: 32px;
+  margin: 64px;
+}
