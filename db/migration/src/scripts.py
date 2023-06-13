@@ -1,7 +1,7 @@
 import os
 
-from src.config import conn
-from src.queries import written_queries, generate_sample_flights_query, generate_sample_reserved_flight_query, \
+from config import conn
+from queries import written_queries, generate_sample_flights_query, generate_sample_reserved_flight_query, \
     generate_paid_reservations, generate_sample_reservation_participant, generate_canceled_reservations, delay_flights
 
 

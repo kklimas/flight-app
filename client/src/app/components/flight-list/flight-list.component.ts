@@ -11,8 +11,8 @@ import {MatTableDataSource} from "@angular/material/table";
   styleUrls: ['./flight-list.component.css']
 })
 export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns = ['id', 'airline', 'origin', 'destination', 'departure', 'status', 'more']
   dataSource: MatTableDataSource<Flight> = new MatTableDataSource<Flight>();

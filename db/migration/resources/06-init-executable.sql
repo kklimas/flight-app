@@ -39,15 +39,17 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION f_get_flight_by_id(flight_id INT)
     RETURNS TABLE
             (
-                id               int,
-                departure_date   timestamp,
-                arrival_date     timestamp,
-                origin_city      varchar(50),
-                destination_city varchar(50),
-                delay            interval,
-                status           varchar(30),
-                base_fare        numeric(10, 2),
-                adult_fare       numeric(10, 2)
+                id                  int,
+                departure_date      timestamp,
+                arrival_date        timestamp,
+                origin_city         varchar(50),
+                destination_city    varchar(50),
+                delay               interval,
+                status              varchar(30),
+                base_fare           numeric(10, 2),
+                adult_fare          numeric(10, 2),
+                no_available_places int,
+                no_total_places     int
             )
 AS
 $$
@@ -61,7 +63,9 @@ BEGIN
                tf.delay,
                tf.status,
                tf.base_fare,
-               tf.adult_fare
+               tf.adult_fare,
+               tf.no_available_places,
+               tf.no_total_places
         from t_flight tf
                  inner join t_airline ta on ta.id = tf.airline_id
                  inner join t_flight_city tfc1 on tfc1.airline_code = tf.origin_id
@@ -142,13 +146,17 @@ DECLARE
     r_reservation_id          INT;
     r_participant_id          INT;
     r_flight_available_places INT;
+    r_flight_status           VARCHAR;
     r_participant             RECORD;
 BEGIN
     CALL p_flight_exists(r_flight_id);
     CALL p_user_exists(r_booking_party_id);
-    select t.no_available_places into r_flight_available_places from t_flight t where t.id = r_flight_id limit 1;
+    select t.no_available_places, t.status into r_flight_available_places, r_flight_status from t_flight t where t.id = r_flight_id limit 1;
     IF r_flight_available_places < jsonb_array_length(r_participants) then
         raise exception 'Not enough places to book for all people.';
+    end if;
+    IF r_flight_status = 'CANCELED' then
+        raise exception 'Cannot book canceled flight.';
     end if;
     INSERT INTO t_reservation (flight_id, booking_party_id, participants_number)
     VALUES (r_flight_id, r_booking_party_id, jsonb_array_length(r_participants))
@@ -422,14 +430,16 @@ BEGIN
                trp.last_name,
                trp.is_adult
         from t_flight t
-                 inner join t_reservation tr on t.id = tr.booking_party_id
+                 inner join t_reservation tr on t.id = tr.flight_id
                  inner join t_reservation_participant trp on tr.id = trp.reservation_id
-        where t.id = f_flight_id;
+        where t.id = f_flight_id
+          and tr.status <> 'CANCELED';
 END;
 $$
     LANGUAGE plpgsql;
 
 create or replace view reservation_transactions as
-    select tr.id, tu.first_name, tu.last_name, tr.status, tr.log_date from t_reservation_log tr
-inner join t_reservation t on t.id = tr.reservation_id
-inner join t_user tu on tu.id = t.booking_party_id
+select tr.id, tu.first_name, tu.last_name, tr.status, tr.log_date
+from t_reservation_log tr
+         inner join t_reservation t on t.id = tr.reservation_id
+         inner join t_user tu on tu.id = t.booking_party_id

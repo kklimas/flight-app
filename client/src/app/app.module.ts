@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -29,6 +29,10 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import { ReservationListComponent } from './components/reservation-list/reservation-list.component';
 import { FlightDetailsComponent } from './components/flight-details/flight-details.component';
+import {MatListModule} from "@angular/material/list";
+import { DelayDialogComponent } from './components/dialog/delay-dialog/delay-dialog.component';
+import { BookFlightDialogComponent } from './components/dialog/book-flight-dialog/book-flight-dialog.component';
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -43,6 +47,8 @@ import { FlightDetailsComponent } from './components/flight-details/flight-detai
     OperationListComponent,
     ReservationListComponent,
     FlightDetailsComponent,
+    DelayDialogComponent,
+    BookFlightDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +68,10 @@ import { FlightDetailsComponent } from './components/flight-details/flight-detai
     MatTabsModule,
     MatDialogModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatListModule,
+    MatSelectModule,
+    ReactiveFormsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

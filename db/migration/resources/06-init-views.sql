@@ -1,6 +1,6 @@
 create or replace view flights as
 select tf.id,
-       ta.id as airline_id,
+       ta.id        as airline_id,
        ta.name,
        t1.city_name as origin_city,
        t2.city_name as destination_city,
@@ -18,7 +18,7 @@ from t_flight tf
 
 create or replace view available_flights as
 select tf.id,
-       ta.id as airline_id,
+       ta.id        as airline_id,
        ta.name,
        t1.city_name as origin_city,
        t2.city_name as destination_city,
@@ -34,7 +34,8 @@ from t_flight tf
          inner join t_flight_city t1 on tf.origin_id = t1.airline_code
          inner join t_flight_city t2 on tf.destination_id = t2.airline_code
 where tf.no_available_places > 0
-  and tf.departure_date > current_date;
+  and tf.departure_date > current_date
+  and tf.status <> 'CANCELED';
 
 create or replace view payment_transactions as
 select t.id, t.reservation_id, t.type, t.amount, t.date, tu.username, t.account_number
@@ -44,7 +45,7 @@ from t_payment_log t
 
 create or replace view reservations as
 select tr.id,
-       tf.id as flight_id,
+       tf.id          as flight_id,
        tr.date        as reservation_date,
        tr.status,
        tu.username    as booking_party_username,

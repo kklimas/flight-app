@@ -52,7 +52,7 @@ export const delayFlight = (req: Request, res: Response) => {
     FlightService.delayFlight(parseInt(flightId), new FlightDelay(delay.days, delay.hours, delay.minutes))
         .then(() => {
             LogProvider.info(`Delayed flight with id ${flightId}.`)
-            res.sendStatus(200);
+            res.status(200).send();
         }).catch(err => {
         LogProvider.error(err);
         res.sendStatus(400);
@@ -64,7 +64,7 @@ export const cancelFlight = (req: Request, res: Response) => {
     FlightService.cancelFlight(parseInt(flightId))
         .then(() => {
             LogProvider.info(`Canceled flight with id ${flightId} and all reservations for this flight.`)
-            res.sendStatus(200);
+            res.status(200).send();
         }).catch(err => {
         LogProvider.error(err);
         res.sendStatus(400);

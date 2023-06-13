@@ -9,6 +9,7 @@ export interface Flight {
   arrival_date: string;
   delay: FlightDelay;
   no_available_places: number;
+  no_total_places: number;
   base_fare: number;
   adult_fare: number;
 }

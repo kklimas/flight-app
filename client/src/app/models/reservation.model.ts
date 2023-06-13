@@ -22,6 +22,7 @@ export interface ReservationDetails extends Reservation {
 }
 
 export interface ReservationParticipant {
+  reservation_id: number;
   first_name: string;
   last_name: string;
   is_adult: boolean;
@@ -29,4 +30,10 @@ export interface ReservationParticipant {
 
 export enum ReservationStatus {
   NEW, PAID, CANCELED
+}
+
+export interface ReservationCreationDTO {
+  flight_id: string;
+  booking_party_id: string;
+  participants: ReservationParticipant[]
 }

@@ -16,7 +16,7 @@ export class ReservationRepository implements IRepository<Reservation, Reservati
     }
 
     add(reservationDTO: ReservationCreationDTO): Promise<QueryResult<Reservation>> {
-        return QueryExecutor.executeQuery(`call p_add_reservation(${reservationDTO.flight_id}, ${reservationDTO.booking_party_id}, '${reservationDTO.participants})'`)
+        return QueryExecutor.executeQuery(`call p_add_reservation(${reservationDTO.flight_id}, ${reservationDTO.booking_party_id}, '${JSON.stringify(reservationDTO.participants)}')`)
     }
 
     makePayment(reservationId: number): Promise<QueryResult<Reservation>> {

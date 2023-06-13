@@ -7,6 +7,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: flight_system
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -14,7 +15,24 @@ services:
       - "5432:5432"
     networks:
       - postgres
-
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  python-migration:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    build: .
+    environment:
+      DATABASE_NAME: flight_system
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_PASSWORD: postgres
+      DATABASE_USERNAME: postgres
+    networks:
+      - postgres
 networks:
   postgres:
     driver: bridge

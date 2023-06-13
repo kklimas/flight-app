@@ -1,6 +1,6 @@
 import random
 
-from src.config import conn
+from config import conn
 from util import random_dates, random_cities, random_fares, random_delay, subtract_days
 
 flight_count = 30

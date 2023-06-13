@@ -1,1 +1,105 @@
-<p>flight-details works!</p>
+<ng-container *ngIf="flight">
+  <h1>Flight ID: {{flight.id}}</h1>
+  <mat-divider></mat-divider>
+  <div class="cards">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Origin</mat-card-title>
+        <mat-card-subtitle>{{flight.origin_city}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <b>Departure date:</b> {{flight.departure_date | date: 'medium'}}
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Destination</mat-card-title>
+        <mat-card-subtitle>{{flight.destination_city}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <b>Arrival date:</b> {{flight.arrival_date | date: 'medium'}}
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Status</mat-card-title>
+        <mat-card-subtitle>{{flight.status}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content *ngIf="flight.status.toString() === 'DELAYED'">
+        <b>Delay:</b> {{flight.delay | convertDelay}}
+      </mat-card-content>
+      <mat-card-actions *ngIf="flight.status.toString() !== 'CANCELED'" align="end">
+        <button mat-button color="primary" (click)="delayFlight()">Delay</button>
+        <button mat-button color="warn" (click)="cancelFlight()">Cancel</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Fares</mat-card-title>
+        <mat-card-subtitle>Flight costs</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <b>Base fare:</b> {{flight.base_fare}}$ <br/>
+        <b>Additional adult fare:</b> {{flight.adult_fare}}$
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Places</mat-card-title>
+        <mat-card-subtitle>Flight places</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <b>Available places:</b> {{flight.no_available_places}}<br/>
+        <b>Total places:</b> {{flight.no_total_places}}
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="flight.status.toString() !== 'CANCELED' && flight.no_available_places > 0">
+      <mat-card-header>
+        <mat-card-title>Booking</mat-card-title>
+        <mat-card-subtitle>Book a flight</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions align="end">
+        <button mat-button color="primary" (click)="bookFlight()">Book</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div *ngIf="displayParticipants">
+    <mat-divider></mat-divider>
+    <div  style="margin-top: 64px">
+      <h1 >Flight participants</h1>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="participantSource">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Reservation ID</th>
+            <td mat-cell *matCellDef="let element"> {{element.reservation_id}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="first_name">
+            <th mat-header-cell *matHeaderCellDef>First name</th>
+            <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="last_name">
+            <th mat-header-cell *matHeaderCellDef>Last name</th>
+            <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="is_adult">
+            <th mat-header-cell *matHeaderCellDef>Adult</th>
+            <td mat-cell *matCellDef="let element"> {{element.is_adult}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="participantColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: participantColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 15]"
+                       showFirstLastButtons
+                       aria-label="Select page of participants">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</ng-container>

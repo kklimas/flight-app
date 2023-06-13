@@ -33,7 +33,7 @@ export class FlightRepository implements IRepository<Flight, FlightCreationDTO> 
 
     flightParticipants(flightId: number): Promise<QueryResult<Flight[]>> {
         return QueryExecutor.executeQuery(`select *
-                                           from f_flight_participants(${flightId}) order by id`);
+                                           from f_flight_participants(${flightId}) order by reservation_id`);
     }
 
 }

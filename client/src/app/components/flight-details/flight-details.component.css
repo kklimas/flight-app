@@ -1,0 +1,18 @@
+mat-card {
+  width: 22%;
+}
+
+mat-card-content {
+  margin-top: 16px;
+}
+
+.cards {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: center;
+  align-content: center;
+}

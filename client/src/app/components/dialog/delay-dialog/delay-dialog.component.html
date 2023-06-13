@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Delay</h1>
+<div mat-dialog-content style="margin-top: 8px;">
+  <mat-form-field style="margin-top: 8px;" appearance="outline">
+    <mat-label>Days</mat-label>
+    <input min="0" [(ngModel)]="delay.days" type="number" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Hours</mat-label>
+    <input min="0" [(ngModel)]="delay.hours" type="number" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Minutes</mat-label>
+    <input min="0" [(ngModel)]="delay.minutes" type="number" matInput>
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close({result: false, data: {}})">Cancel</button>
+  <button mat-button (click)="onSubmit()">Submit</button>
+</div>
+

@@ -1,0 +1,36 @@
+<ng-container>
+  <h1 mat-dialog-title>Flight participants</h1>
+  <div mat-dialog-content style="margin-top: 8px;">
+    <form [formGroup]="form">
+      <div formArrayName="participants">
+        <div class="form-row" *ngFor="let item of participants.controls; let i = index" [formGroupName]="i">
+          <ng-container>
+            <mat-form-field>
+              <mat-label>First name</mat-label>
+              <input formControlName="firstName" matInput>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Last name</mat-label>
+              <input formControlName="lastName" matInput>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Adult</mat-label>
+              <mat-select formControlName="isAdult">
+                <mat-option [value]="true">True</mat-option>
+                <mat-option [value]="false">False</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+          <div class="btn-col">
+            <button *ngIf="i !== 0" mat-button color="warn" (click)="removeItem(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+      <button mat-button color="primary" (click)="addItem()">Add participant</button>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close({result: false, data: {}})">Cancel</button>
+      <button [disabled]="!participants.valid" mat-button (click)="onSubmit()">Submit</button>
+  </div>
+</ng-container>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Reservation, ReservationDetails} from "../models/reservation.model";
+import {Reservation, ReservationCreationDTO, ReservationDetails} from "../models/reservation.model";
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,8 @@ export class ReservationService {
     return this.httpClient.get<Reservation[]>(this.RESERVATION);
   }
 
-  addReservation(): Observable<void> {
-    return this.httpClient.post<void>(this.RESERVATION, {});
+  addReservation(dto: ReservationCreationDTO): Observable<void> {
+    return this.httpClient.post<void>(this.RESERVATION, dto);
   }
 
   getReservationById(reservationId: number): Observable<ReservationDetails> {

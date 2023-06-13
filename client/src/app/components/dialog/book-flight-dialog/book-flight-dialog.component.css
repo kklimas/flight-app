@@ -1,0 +1,13 @@
+.form-row {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  gap: 48px;
+}
+
+.btn-col {
+  min-width: 10%;
+  display: flex;
+  align-content: end;
+  justify-content: end;
+}
