@@ -8,6 +8,6 @@ Zarządzanie połączeniami lotniczymi - dodawanie nowych możliwości, rezerwac
 Kacper Klimas (`kaklimas@student.agh.edu.pl`) i Krzysztof Solecki `ksolecki@student.agh.edu.pl`
 
 # Technologie
- - frontend - Angular
- - backend - NodeJS
- - baza danych - PostgreSQL
+ - [Frontend](client/README.md) - Angular, Material UI
+ - [Backend](server/README.md) - Node, Express
+ - [Database](db/README.md) - Postgresql
