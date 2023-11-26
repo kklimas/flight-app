@@ -11,3 +11,18 @@ Kacper Klimas (`kaklimas@student.agh.edu.pl`) i Krzysztof Solecki `ksolecki@stud
  - [Frontend](client/README.md) - Angular, Material UI
  - [Backend](server/README.md) - Node, Express
  - [Database](db/README.md) - Postgresql
+
+# Przykładowe widoki
+
+## Loty
+<img src="./ss/flights.png" alt="drawing" width="700"/>
+
+
+## Detale lotu
+<img src="./ss/flight.png" alt="drawing" width="700"/>
+
+## Operacje
+<img src="./ss/operations.png" alt="drawing" width="700"/>
+
+## Rezerwacje
+<img src="./ss/reservations.png" alt="drawing" width="700"/>
